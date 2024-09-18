@@ -1,0 +1,6 @@
+[submodule "litehtml-tests"]
+	path = litehtml-tests
+	url = https://github.com/litehtml/litehtml-tests.git
+[submodule "litehtml"]
+	path = litehtml
+	url = https://github.com/litehtml/litehtml.git
