@@ -59,3 +59,8 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 		CXX_STANDARD 17
 		C_STANDARD 99
 )
+
+set(LITEHTML_PATH ${CMAKE_CURRENT_SOURCE_DIR}/litehtml)
+set(LITEHTML_BUILD_RENDER2PNG ON)
+set(LITEHTML_BUILD_MANAGE_FAILED ON)
+add_subdirectory(litehtml-tests)

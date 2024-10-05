@@ -41,10 +41,7 @@ bool html_widget::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 
 void html_widget::get_client_rect(litehtml::position& client) const
 {
-	client.width = get_parent()->get_allocated_width();
-	client.height = get_parent()->get_allocated_height();
-	client.x = 0;
-	client.y = 0;
+	client = m_sig_get_viewport.emit();
 }
 
 void html_widget::set_caption(const char* caption)
