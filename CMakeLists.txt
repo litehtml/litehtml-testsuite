@@ -16,7 +16,8 @@ set(CMAKE_C_FLAGS_DEBUG "-O0 -DDEBUG -g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_C_FLAGS_RELEASE "-O3")
 
-pkg_check_modules(LB_LIBS REQUIRED gdkmm-3.0 gtkmm-3.0 libcurl cairo pango pangocairo fontconfig webkit2gtk-4.1)
+pkg_check_modules(LB_LIBS REQUIRED gtkmm-4.0 libcurl cairo pango pangocairo fontconfig webkitgtk-6.0)
+pkg_check_modules(LB_ADW libadwaita-1)
 
 add_subdirectory(litehtml)
 
@@ -27,17 +28,19 @@ add_executable(litehtml_testsuite
 		src/main.cpp
 		src/main_window.cpp
 		src/main_window.h
-		src/html_host.h
-		src/html_widget.cpp
-		src/html_widget.h
-		src/http_request.cpp
-		src/http_request.h
-		src/http_requests_pool.cpp
-		src/http_requests_pool.h
-		src/web_history.cpp
-		src/web_history.h
-		src/web_page.cpp
-		src/web_page.h
+		litehtml/support/gtkmm4/html_widget.cpp
+		litehtml/support/gtkmm4/html_widget.h
+		litehtml/support/webpage/html_host.h
+		litehtml/support/webpage/http_request.cpp
+		litehtml/support/webpage/http_request.h
+		litehtml/support/webpage/http_requests_pool.cpp
+		litehtml/support/webpage/http_requests_pool.h
+		litehtml/support/webpage/web_history.cpp
+		litehtml/support/webpage/web_history.h
+		litehtml/support/webpage/web_page.cpp
+		litehtml/support/webpage/web_page.h
+		litehtml/support/webpage/draw_buffer.h
+		litehtml/support/webpage/draw_buffer.cpp
 		litehtml/containers/cairo/cairo_borders.cpp
 		litehtml/containers/cairo/cairo_borders.h
 		litehtml/containers/cairo/container_cairo.cpp
@@ -51,9 +54,13 @@ add_executable(litehtml_testsuite
 		src/source_viewer.h
 )
 
-include_directories(${PROJECT_NAME} litehtml/include ${LB_LIBS_INCLUDE_DIRS} litehtml/containers/cairo litehtml-tests)
-target_link_options(${PROJECT_NAME} PRIVATE ${LB_LIBS_LDFLAGS} ${FONTCONFIG_LDFLAGS})
-target_link_libraries(${PROJECT_NAME} litehtml ${LB_LIBS_LIBRARIES} ${FONTCONFIG_LIBRARIES})
+include_directories(${PROJECT_NAME} litehtml/include ${LB_LIBS_INCLUDE_DIRS} ${LB_ADW_INCLUDE_DIRS} litehtml/containers/cairo litehtml/support/webpage litehtml/support/gtkmm4 litehtml-tests)
+target_link_options(${PROJECT_NAME} PRIVATE ${LB_LIBS_LDFLAGS} ${FONTCONFIG_LDFLAGS} ${LB_ADW_LDFLAGS})
+target_link_libraries(${PROJECT_NAME} litehtml ${LB_LIBS_LIBRARIES} ${FONTCONFIG_LIBRARIES} ${LB_ADW_LIBRARIES})
+
+if (LB_ADW_FOUND)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC LIBADWAITA_AVAILABLE=1)
+endif ()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
 		CXX_STANDARD 17

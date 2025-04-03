@@ -5,12 +5,13 @@
 #include <gtkmm/textview.h>
 #include <gtkmm/scrolledwindow.h>
 
-class source_viewer : public Gtk::Dialog
+class source_viewer : public Gtk::Window
 {
 	Gtk::TextView		m_text_view;
-	Gtk::ScrolledWindow m_scrolled_wnd;
 public:
-	explicit source_viewer(Gtk::Window& parent, const std::string& source);
+	explicit source_viewer(Gtk::Window& parent);
+
+	static void show_source(Gtk::Window& parent, const std::string& source_text);
 };
 
 #endif //LITEHTML_TESTSUITE_SOURCE_VIEWER_H
